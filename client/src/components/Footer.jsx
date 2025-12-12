@@ -25,7 +25,7 @@ const Footer = ({ installPrompt, onInstallClick }) => {
                 <div className="footer-section install">
                     <h3>Get the App</h3>
                     <p>Install Bynlora on your device for offline access.</p>
-                    <button
+                    {/* <button
                         onClick={onInstallClick}
                         className="footer-install-btn"
                         style={{
@@ -46,7 +46,7 @@ const Footer = ({ installPrompt, onInstallClick }) => {
                         title={installPrompt ? "Install App" : "App already installed or not supported"}
                     >
                         <Download size={18} /> {installPrompt ? 'Install App' : 'App Installed'}
-                    </button>
+                    </button> */}
                     <p style={{ marginTop: '10px', fontSize: '0.8rem' }}>comchatx@gmail.com</p>
                 </div>
             </div>
