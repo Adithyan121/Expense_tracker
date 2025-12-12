@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://expense-tracker-6vs5.vercel.app/',
+    origin: 'https://expense-tracker-6vs5.vercel.app',
     credentials: true,
 }));
 
