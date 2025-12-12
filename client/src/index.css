@@ -1,0 +1,70 @@
+:root {
+  --primary: #fff500;
+  --bg-color: #000000;
+  --surface-color: #111111;
+  --element-bg: #111111;
+  --text-main: #ffffff;
+  --text-on-element: #ffffff;
+  --text-muted: #888888;
+  --text-secondary: #aaaaaa;
+  --border-color: #333333;
+  --border-active: #fff500;
+  --danger-color: #ff3333;
+  --success-color: #00ff00;
+  --warning-color: #ffaa00;
+  /* Custom alias used by user */
+  --text-mine: var(--text-main);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-color);
+  /* color: var(--primary); */
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+}
+
+/* Global inputs for minimal look */
+input,
+select {
+  background-color: var(--surface-color);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 12px;
+  border-radius: 4px;
+  /* Minimal rounded */
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--border-active);
+}

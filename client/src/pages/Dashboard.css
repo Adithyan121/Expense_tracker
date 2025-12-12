@@ -1,0 +1,545 @@
+/* Dashboard Smoothness Updates */
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Header */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 20px;
+}
+
+.welcome-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+.btn-add {
+    background-color: var(--element-bg);
+    color: var(--text-on-element);
+    padding: 12px 24px;
+    justify-content: right;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(255, 245, 0, 0.2);
+}
+
+.btn-add:hover {
+    background-color: var(--text-main);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 245, 0, 0.3);
+}
+
+/* Stats Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: var(--element-bg);
+    border: 1px solid var(--border-color);
+    padding: 24px;
+    border-radius: 12px;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.stat-card:hover {
+    border-color: var(--primary);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgba(255, 245, 0, 0.1);
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-box.warning {
+    background-color: rgba(255, 87, 87, 0.1);
+    color: #ff5757;
+}
+
+.stat-label {
+    color: var(--text-mine);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-on-element);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+}
+
+
+.stat-sub {
+    font-size: 0.8rem;
+    color: var(--text-mine);
+    margin-top: 8px;
+    opacity: 1;
+}
+
+/* Filters */
+.filters-bar {
+    background-color: var(--element-bg);
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    transition: border-color 0.2s;
+}
+
+.filters-bar:focus-within {
+    border-color: var(--primary);
+}
+
+.search-box {
+    flex: 1;
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--primary);
+    padding: 12px 12px 12px 40px;
+    /* Space for icon */
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.search-input::placeholder {
+    color: var(--primary);
+    opacity: 0.6;
+}
+
+.search-input:focus {
+    border-color: var(--primary);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(255, 245, 0, 0.1);
+}
+
+
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary);
+}
+
+.filter-select,
+.filter-date {
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--primary);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-select:hover,
+.filter-date:hover {
+    border-color: var(--text-on-element);
+}
+
+.filter-select:focus,
+.filter-date:focus {
+    border-color: var(--primary);
+}
+
+/* Expense List */
+.expense-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.expense-item {
+    background-color: var(--element-bg);
+    border: 1px solid transparent;
+    padding: 24px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.expense-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: var(--primary);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.expense-item:hover {
+    border: 1px solid var(--border-color);
+    transform: translateX(4px);
+}
+
+.expense-item:hover::before {
+    opacity: 1;
+}
+
+.expense-info {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.category-icon {
+    width: 56px;
+    height: 56px;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+    font-weight: 800;
+    font-size: 1.4rem;
+    transition: all 0.3s;
+}
+
+.expense-item:hover .category-icon {
+    border-color: var(--primary);
+    background-color: var(--primary);
+    color: var(--bg-color);
+}
+
+.expense-details h4 {
+    color: var(--text-on-element);
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.expense-meta {
+    color: var(--text-on-element);
+    font-size: 0.85rem;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.expense-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.expense-amount {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.5px;
+}
+
+.expense-actions {
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    margin-left: 24px;
+    transform: translateX(10px);
+}
+
+.expense-item:hover .expense-actions {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.btn-icon {
+    background: var(--element-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-on-element);
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+
+/* Modal specific overrides if needed - assuming Modal component handles its own structural css, 
+   but we can style the content here if passed as children */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--element-bg);
+    border: 1px solid var(--primary);
+    padding: 30px;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 12px;
+    color: var(--text-on-element);
+    /* color: var(--text-on-element); */
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 16px;
+}
+
+.modal-close {
+    background: transparent;
+    color: #888;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--text-main);
+}
+
+/* Minimal Mobile View */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 16px 12px;
+    }
+
+    .dashboard-header {
+        margin-bottom: 16px;
+        padding-bottom: 12px;
+    }
+
+    .dashboard-title {
+        font-size: 1.25rem;
+    }
+
+    /* Minimal Add Button - Icon Only on Mobile */
+    .btn-add span {
+        display: none;
+    }
+
+    .btn-add {
+        padding: 8px;
+        border-radius: 50%;
+        /* Circle button */
+        width: 36px;
+        height: 36px;
+        justify-content: center;
+    }
+
+    /* Stats Grid Stack - Allow 2 columns on larger mobile devices */
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stat-card {
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    .stat-header {
+        margin-bottom: 8px;
+    }
+
+    .icon-box {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+    }
+
+    .icon-box svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    .stat-value {
+        font-size: 1.4rem;
+    }
+
+    .stat-sub {
+        font-size: 0.7rem;
+        margin-top: 4px;
+    }
+
+    /* Stack Filters */
+    .filters-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .search-box,
+    .search-input {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .filter-select,
+    .filter-date {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    /* Compact Expense Item */
+    .expense-item::before {
+        width: 0;
+        height: 4px;
+        top: 0;
+        bottom: auto;
+        left: 0;
+        right: 0;
+        width: 100%;
+    }
+
+    .expense-item:hover {
+        transform: none;
+    }
+
+    .category-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+        border-radius: 10px;
+    }
+
+    .expense-details h4 {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+    }
+
+    .expense-meta {
+        font-size: 0.75rem;
+    }
+
+    .expense-meta span:nth-child(n+4) {
+        display: none;
+    }
+
+    .expense-amount {
+        font-size: 1.1rem;
+        margin-left: 0;
+        margin-top: 4px;
+    }
+
+    /* Re-structure Item for Mobile */
+    .expense-item {
+        display: flex;
+        flex-direction: column !important;
+        padding: 12px;
+        align-items: flex-start;
+        gap: 10px;
+        border-radius: 10px;
+    }
+
+    .expense-info {
+        flex-direction: row;
+        width: 100%;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .expense-actions {
+        opacity: 1;
+        transform: none;
+        margin-left: auto;
+    }
+
+    .btn-icon {
+        padding: 6px;
+    }
+
+    .btn-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+    .model{
+        color:'var(--text-muted)z' ;
+    }
+}

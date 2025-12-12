@@ -1,0 +1,120 @@
+:root {
+    --theme-yellow: #fff500;
+    --theme-black: #000000;
+}
+
+body {
+    background-color: var(--theme-black);
+    color: var(--theme-yellow);
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+}
+
+/* Container for responsive layout */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Responsive Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--theme-yellow);
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+}
+
+/* Buttons */
+.btn-yellow {
+    background-color: var(--theme-yellow);
+    color: var(--theme-black);
+    border: 2px solid var(--theme-yellow);
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    /* Optional rounded corners */
+}
+
+.btn-yellow:hover {
+    background-color: var(--theme-black);
+    color: var(--theme-yellow);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--theme-yellow);
+    border: 2px solid var(--theme-yellow);
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+    background-color: var(--theme-yellow);
+    color: var(--theme-black);
+}
+
+/* Cards / Sections */
+.card-black {
+    background-color: #111;
+    /* Slightly lighter black for contrast if needed, or keeping strict black */
+    border: 1px solid var(--theme-yellow);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(255, 245, 0, 0.1);
+}
+
+/* Responsive Grid */
+.grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+@media (max-width: 600px) {
+    .grid-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Links */
+a {
+    color: var(--theme-yellow);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.3s ease;
+}
+
+a:hover {
+    border-bottom: 1px solid var(--theme-yellow);
+}
