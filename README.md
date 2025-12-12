@@ -97,7 +97,7 @@ A comprehensive personal finance management application built with the MERN stac
 
 ## © Copyright
 
-**Copyright (c) 2025 [Your Name/Company Name]. All Rights Reserved.**
+**Copyright (c) 2025 Adithyan G. All Rights Reserved.**
 
 This source code and application are the proprietary property of the copyright holder. 
 Unauthorized copying, distribution, modification, or use of this file, via any medium, is strictly prohibited. 
