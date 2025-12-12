@@ -51,7 +51,7 @@ A comprehensive personal finance management application built with the MERN stac
 
 1.  **Clone the repository**
     ```bash
-    git clone <repository-url>
+    git clone https://github.com/Adithyan121/Expense_tracker.git
     cd expense-tracker
     ```
 
