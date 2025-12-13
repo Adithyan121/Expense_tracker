@@ -16,16 +16,11 @@ app.use(cookieParser());
 
 // ----- CORS -----
 app.use(cors({
-<<<<<<< HEAD
-    origin: 'https://expense-tracker-6vs5.vercel.app',
-    credentials: true,
-=======
   origin: [
     "http://localhost:5173",
     "https://expense-tracker-6vs5.vercel.app"
   ],
   credentials: true,
->>>>>>> 49394b8 (Update EmailJS email service and templates)
 }));
 
 // ----- DATABASE -----
@@ -44,7 +39,7 @@ app.get("/", (req, res) => {
 
 // ----- ERROR HANDLER -----
 app.use((err, req, res, next) => {
-  console.log(err);
+  console.error(err);
   res.status(500).json({ message: "Server Error" });
 });
 
