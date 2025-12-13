@@ -3,6 +3,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { protect } = require('../middleware/authMiddleware');
 const { sendEmail, getOtpTemplate } = require('../utils/emailService');
+const OtpVerification = require('../models/OtpVerification');
+
 
 
 const router = express.Router();
@@ -14,6 +16,7 @@ const generateToken = (id) => {
 };
 
 // Register
+// Register
 router.post('/register', async (req, res) => {
     const { name, email, password } = req.body;
     try {
@@ -23,53 +26,103 @@ router.post('/register', async (req, res) => {
         }
 
         const otp = Math.floor(100000 + Math.random() * 900000).toString();
-        const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
-        const user = await User.create({
+        // Check if there is an existing OTP and delete it
+        await OtpVerification.deleteMany({ email });
+
+        // Store OTP and details in temporary collection
+        await OtpVerification.create({
             name,
             email,
             password,
-            otp,
-            otpExpires,
-            isVerified: false
+            otp
         });
 
-        if (user) {
-            const html = getOtpTemplate(otp);
-            await sendEmail(user.email, 'Verify Your Account - Bynlora', html);
+        const html = getOtpTemplate(otp);
+        await sendEmail(email, 'Verify Your Account - Bynlora', html);
 
-            res.status(201).json({
-                message: 'OTP sent to email',
-                email: user.email
-            });
+        res.status(201).json({
+            message: 'OTP sent to email',
+            email: email
+        });
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+// Resend OTP
+router.post('/resend-otp', async (req, res) => {
+    const { email } = req.body;
+    try {
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
         }
+
+        // Find existing temporary record to get name and password
+        const existingRecord = await OtpVerification.findOne({ email });
+        if (!existingRecord) {
+            return res.status(400).json({ message: 'Session expired. Please register again.' });
+        }
+
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        // Delete any existing OTP immediately
+        await OtpVerification.deleteMany({ email });
+
+        // Create new OTP with preserved details
+        await OtpVerification.create({
+            name: existingRecord.name,
+            email: existingRecord.email,
+            password: existingRecord.password,
+            otp
+        });
+
+        const html = getOtpTemplate(otp);
+        await sendEmail(email, 'Resend: Verify Your Account - Bynlora', html);
+
+        res.status(200).json({
+            message: 'New OTP sent to email',
+            email: email
+        });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 });
 
 // Verify OTP
+// Verify OTP
 router.post('/verify-otp', async (req, res) => {
     const { email, otp } = req.body;
     try {
-        const user = await User.findOne({ email });
+        const otpRecord = await OtpVerification.findOne({ email });
 
-        if (!user) {
-            return res.status(400).json({ message: 'User not found' });
+        if (!otpRecord) {
+            return res.status(400).json({ message: 'OTP expired or invalid' });
         }
 
-        if (user.isVerified) {
-            return res.status(400).json({ message: 'User already verified' });
+        if (otpRecord.otp !== otp) {
+            return res.status(400).json({ message: 'Invalid OTP' });
         }
 
-        if (user.otp !== otp || user.otpExpires < Date.now()) {
-            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        // Check if user exists (double check)
+        const userExists = await User.findOne({ email });
+        if (userExists) {
+            return res.status(400).json({ message: 'User already exists' });
         }
 
-        user.isVerified = true;
-        user.otp = undefined;
-        user.otpExpires = undefined;
-        await user.save();
+        // Create User using details from DB
+        const user = await User.create({
+            name: otpRecord.name,
+            email: otpRecord.email,
+            password: otpRecord.password, // Password will be hashed by User model pre-save hook
+            isVerified: true
+        });
+
+        // Clear OTP
+        await OtpVerification.deleteOne({ _id: otpRecord._id });
 
         const token = generateToken(user._id);
         res.cookie('token', token, { httpOnly: true, secure: false });

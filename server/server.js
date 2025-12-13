@@ -9,42 +9,43 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ----- REQUIRED TO READ JSON -----
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// ----- CORS -----
 app.use(cors({
+<<<<<<< HEAD
     origin: 'https://expense-tracker-6vs5.vercel.app',
     credentials: true,
+=======
+  origin: [
+    "http://localhost:5173",
+    "https://expense-tracker-6vs5.vercel.app"
+  ],
+  credentials: true,
+>>>>>>> 49394b8 (Update EmailJS email service and templates)
 }));
 
-// Database Connection
+// ----- DATABASE -----
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('MongoDB Connected');
-        require('./cron/expenseCron')(); // Existing cron if any
-        require('./cron/monthlyReminders')(); // New monthly reminder cron
-    })
-    .catch(err => console.log(err));
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
-// Routes Placeholder
-app.get('/', (req, res) => {
-    res.send('API is running...');
+// ----- ROUTES -----
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/expenses", require("./routes/expenses"));
+app.use("/api/ai", require("./routes/ai"));
+
+app.get("/", (req, res) => {
+  res.send("API is running...");
 });
 
-// Import Routes
-const authRoutes = require('./routes/auth');
-const expenseRoutes = require('./routes/expenses');
-
-app.use('/api/auth', authRoutes);
-app.use('/api/expenses', expenseRoutes);
-app.use('/api/ai', require('./routes/ai'));
-
-// Error Handling Middleware
+// ----- ERROR HANDLER -----
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ message: 'Something went wrong!' });
+  console.log(err);
+  res.status(500).json({ message: "Server Error" });
 });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

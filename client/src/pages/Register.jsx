@@ -6,7 +6,7 @@ import logo from '../assets/logo2.png';
 import { motion } from 'framer-motion';
 
 const Register = () => {
-    const { register, verifyOtp } = useContext(AuthContext);
+    const { register, verifyOtp, resendOtp } = useContext(AuthContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ name: '', email: '', password: '' });
     const [otp, setOtp] = useState('');
@@ -14,6 +14,7 @@ const Register = () => {
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const [timeLeft, setTimeLeft] = useState(600); // 10 minutes in seconds
+    const [resendCooldown, setResendCooldown] = useState(30);
 
     useEffect(() => {
         let timer;
@@ -24,6 +25,31 @@ const Register = () => {
         }
         return () => clearInterval(timer);
     }, [step, timeLeft]);
+
+    useEffect(() => {
+        let timer;
+        if (resendCooldown > 0) {
+            timer = setInterval(() => {
+                setResendCooldown((prev) => prev - 1);
+            }, 1000);
+        }
+        return () => clearInterval(timer);
+    }, [resendCooldown]);
+
+    const handleResend = async () => {
+        setLoading(true);
+        setError('');
+        try {
+            await resendOtp(formData.email);
+            setResendCooldown(30);
+            setTimeLeft(600); // Reset expiry timer on resend
+            alert('New code sent!');
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to resend OTP');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -50,7 +76,7 @@ const Register = () => {
         setError('');
         setLoading(true);
         try {
-            await verifyOtp(formData.email, otp);
+            await verifyOtp(formData.name, formData.email, formData.password, otp);
             navigate('/');
         } catch (err) {
             setError(err.response?.data?.message || 'Invalid OTP');
@@ -134,6 +160,24 @@ const Register = () => {
                         <button type="submit" className="btn-register" disabled={loading || timeLeft === 0}>
                             {loading ? 'VERIFYING...' : 'VERIFY & LOGIN'}
                         </button>
+
+                        <div className="resend-container text-center mt-3">
+                            <button
+                                type="button"
+                                onClick={handleResend}
+                                disabled={resendCooldown > 0 || loading}
+                                className="text-sm underline opacity-80 hover:opacity-100"
+                                style={{
+                                    background: 'none',
+                                    border: 'none',
+                                    color: resendCooldown > 0 ? 'var(--text-muted)' : 'var(--primary)',
+                                    cursor: resendCooldown > 0 ? 'not-allowed' : 'pointer'
+                                }}
+                            >
+                                {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : 'Resend Code'}
+                            </button>
+                        </div>
+
                         <button
                             type="button"
                             onClick={() => {
@@ -141,7 +185,7 @@ const Register = () => {
                                 setTimeLeft(600);
                             }}
                             className="w-full mt-3 text-sm underline opacity-60 hover:opacity-100"
-                            style={{ backgroundColor:'var(--primary)', color: 'var(--text-muted)' }}
+                            style={{ backgroundColor: 'transparent', color: 'var(--text-muted)' }}
                         >
                             Change Email
                         </button>

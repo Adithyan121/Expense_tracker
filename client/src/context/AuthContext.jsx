@@ -15,8 +15,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const { data } = await api.get('/auth/me');
             setUser(data);
-        } catch (error) {
-            localStorage.removeItem('token');
+        } catch {
             setUser(null);
         } finally {
             setLoading(false);
@@ -32,14 +31,18 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         const { data } = await api.post('/auth/register', { name, email, password });
-        // Do not set user/token yet. Wait for OTP.
         return data;
     };
 
-    const verifyOtp = async (email, otp) => {
-        const { data } = await api.post('/auth/verify-otp', { email, otp });
+    const verifyOtp = async (name, email, password, otp) => {
+        const { data } = await api.post('/auth/verify-otp', { name, email, password, otp });
         localStorage.setItem('token', data.token);
         setUser(data);
+        return data;
+    };
+
+    const resendOtp = async (email) => {
+        const { data } = await api.post('/auth/resend-otp', { email });
         return data;
     };
 
@@ -56,7 +59,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, verifyOtp, logout, updateProfile, loading }}>
+        <AuthContext.Provider value={{
+            user,
+            login,
+            register,
+            verifyOtp,
+            resendOtp,
+            logout,
+            updateProfile,
+            loading
+        }}>
             {children}
         </AuthContext.Provider>
     );
